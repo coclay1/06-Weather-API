@@ -4,21 +4,22 @@ var cityInputEl = document.querySelector("#city-input");
 var cityContainerEl = document.querySelector("#city-container")
 var theCity = document.querySelector("#city-name")
 var temp = document.querySelector("#temp")
-var wing = document.querySelector("#wind")
+var wind = document.querySelector("#wind")
 var humidity = document.querySelector("#humidity")
+var apiKey = '636fa7103c23a27dc3dbfcfae373ccaf'
 var cities = [];
 
 function renderCity() {
     cityListEl.innerHTML = "";
-  
+
     // Renders a new li for each city
     for (var i = 0; i < cities.length; i++) {
-      var city = cities[i];
-  
-      var li = document.createElement("li");
-      li.textContent = city;
-      li.setAttribute("data-index", i);
-      cityListEl.appendChild(li);
+        var city = cities[i];
+
+        var li = document.createElement("li");
+        li.textContent = city;
+        li.setAttribute("data-index", i);
+        cityListEl.appendChild(li);
     }
 }
 
@@ -34,48 +35,45 @@ function storeCity() {
     localStorage.setItem("city-name", JSON.stringify(cities))
 }
 
- cityFormEl.addEventListener("submit", function(event) {
+function cityFormHandler() {
+    var cityName = cityInputEl.value.trim();
+    getCity(cityName)
+}
+
+var getCity = function(city) {
+    var url = 'https://api.openweathermap.org/data/2.5/weather?q='+ city + '&appid=' + apiKey
+
+    fetch(url) 
+        .then(function(response) {
+            if (response.ok) {
+                console.log(reponse);
+                response.json().then(function(data) {
+                    console.log(data)
+                })
+            }
+        })
+    
+}
+
+//  function displayWeather(cityName, searchedCity) {
+//     if(cityName === 0) {
+//         return;
+//     }
+//     theCity.textContent = searchedCity;
+
+//  }
+
+cityFormEl.addEventListener("submit", function (event) {
     event.preventDefault();
     var cityText = cityInputEl.value.trim();
-    if ( cityText === "") {
+    if (cityText === "") {
         return;
     };
     cities.push(cityText);
     cityInputEl.value = "";
     storeCity();
     renderCity();
- });
+    cityFormHandler();
+});
 
- function cityFormHandler(event) {
-    event.preventDefault();
-    var cityName = cityInputEl.value.trim();
-    if(cityName) {
-        getCity(cityName);
-        cityContainerEl.textContent = "";
-        cityInputEl.value = "";
-    }else {
-        alert("Please enter a city!");
-    }
- }
-
- function getCity(city) {
-    var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=33.44&lon=-94.04&appid=636fa7103c23a27dc3dbfcfae373ccaf'
-
-    fetch(apiUrl).then(function(response) {
-        if(response.ok) {
-            console.log(response)
-            response.json().then(function(data) {
-                console.log(data)
-                displayWeather(data, city);
-            })
-        }
-    })
- }
-
- function displayWeather(cityName, searchedCity) {
-    if(cityName === 0) {
-        return;
-    }
-    theCity.textContent = searchedCity;
-    temp.textContent = 
- }
+init();
