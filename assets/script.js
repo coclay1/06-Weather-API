@@ -6,6 +6,7 @@ var theCity = document.querySelector("#city-name")
 var temp = document.querySelector("#temp")
 var wind = document.querySelector("#wind")
 var humidity = document.querySelector("#humidity")
+var forecastEl = document.querySelector('#forecast')
 var apiKey = '636fa7103c23a27dc3dbfcfae373ccaf'
 var cities = [];
 
@@ -37,19 +38,48 @@ function storeCity() {
 
 function getCity() {
     var cityName = cityInputEl.value.trim();
-    var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey
+    var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=imperial&appid=' + apiKey
 
     fetch(url)
         .then(function (response) {
             if (response.ok) {
                 console.log(response);
                 response.json().then(function (data) {
-                    console.log(data)
+                    console.log(data);
+                    displayWeather(data);
                 })
             }
         })
 }
 
+function forecast() {
+    var cityName = cityInputEl.value.trim();
+    var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&cnt=5&appid=' + apiKey
+    fetch(forecastUrl)
+    .then(function (response) {
+        if (response.ok) {
+            console.log(response);
+            response.json().then(function (data) {
+                console.log(data);
+                displayForecast(data)
+            })
+        }
+    })
+}
+
+function displayWeather(weather) {
+    theCity.textContent = weather.name
+    temp.textContent = "Temp: " + weather.main.temp
+    humidity.textContent = "Humidity: " + weather.main.humidity
+    wind.textContent = "Wind: " + weather.wind.speed
+}
+
+function displayForecast(forecast) {
+    for (var i = 0; i < data.length; i++) {
+        var forecastEl = document.createElement("div")
+        forecastEl.textContent = forecast.list[i].main.temp
+    }
+}
 
 cityFormEl.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -59,10 +89,10 @@ cityFormEl.addEventListener("submit", function (event) {
     };
     cities.push(cityText);
     getCity();
+    forecast()
     cityInputEl.value = "";
     storeCity();
     renderCity();
-
 });
 
 init();
