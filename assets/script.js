@@ -54,7 +54,7 @@ function getCity() {
 
 function forecast() {
     var cityName = cityInputEl.value.trim();
-    var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&cnt=5&appid=' + apiKey
+    var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&units=imperial&cnt=5&appid=' + apiKey
     fetch(forecastUrl)
     .then(function (response) {
         if (response.ok) {
@@ -68,16 +68,30 @@ function forecast() {
 }
 
 function displayWeather(weather) {
-    theCity.textContent = weather.name
-    temp.textContent = "Temp: " + weather.main.temp
-    humidity.textContent = "Humidity: " + weather.main.humidity
-    wind.textContent = "Wind: " + weather.wind.speed
+    theCity.textContent = weather.name + dayjs().format(' M/D/YYYY')
+    temp.textContent = "Temp: " + weather.main.temp + ' F'
+    humidity.textContent = "Humidity: " + weather.main.humidity + '%'
+    wind.textContent = "Wind: " + weather.wind.speed + 'mph'
 }
 
 function displayForecast(forecast) {
-    for (var i = 0; i < data.length; i++) {
-        var forecastEl = document.createElement("div")
-        forecastEl.textContent = forecast.list[i].main.temp
+    for (var i = 0; i < forecast.list.length; i++) {
+        var forecastDiv = document.createElement('div')
+        var forecastDay = document.createElement('p')
+        var forecastTemp = document.createElement('p')
+        var forecastHumidity = document.createElement('p')
+        var forecastWind = document.createElement('p')
+        forecastDay.textContent = dayjs().format('M/D/YYYY')
+        forecastTemp.textContent = forecast.list[i].main.temp
+        forecastHumidity.textContent = forecast.list[i].main.humidity
+        forecastWind.textContent = forecast.list[i].wind.speed
+        forecastDiv.append(forecastDay)
+        forecastDiv.append(forecastTemp)
+        forecastDiv.append(forecastHumidity)
+        forecastDiv.append(forecastWind)
+        forecastDiv.setAttribute('data-day', i)
+        forecastDiv.setAttribute('class', 'col-2')
+        forecastEl.append(forecastDiv)
     }
 }
 
