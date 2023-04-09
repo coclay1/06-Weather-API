@@ -35,33 +35,21 @@ function storeCity() {
     localStorage.setItem("city-name", JSON.stringify(cities))
 }
 
-function cityFormHandler() {
+function getCity() {
     var cityName = cityInputEl.value.trim();
-    getCity(cityName)
-}
+    var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey
 
-var getCity = function(city) {
-    var url = 'https://api.openweathermap.org/data/2.5/weather?q='+ city + '&appid=' + apiKey
-
-    fetch(url) 
-        .then(function(response) {
+    fetch(url)
+        .then(function (response) {
             if (response.ok) {
-                console.log(reponse);
-                response.json().then(function(data) {
+                console.log(response);
+                response.json().then(function (data) {
                     console.log(data)
                 })
             }
         })
-    
 }
 
-//  function displayWeather(cityName, searchedCity) {
-//     if(cityName === 0) {
-//         return;
-//     }
-//     theCity.textContent = searchedCity;
-
-//  }
 
 cityFormEl.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -70,10 +58,11 @@ cityFormEl.addEventListener("submit", function (event) {
         return;
     };
     cities.push(cityText);
+    getCity();
     cityInputEl.value = "";
     storeCity();
     renderCity();
-    cityFormHandler();
+
 });
 
 init();
