@@ -82,15 +82,15 @@ function displayForecast(forecast) {
         var forecastHumidity = document.createElement('p')
         var forecastWind = document.createElement('p')
         forecastDay.textContent = dayjs().format('M/D/YYYY')
-        forecastTemp.textContent = forecast.list[i].main.temp
-        forecastHumidity.textContent = forecast.list[i].main.humidity
-        forecastWind.textContent = forecast.list[i].wind.speed
+        forecastTemp.textContent = forecast.list[i].main.temp + ' F'
+        forecastHumidity.textContent = forecast.list[i].main.humidity + '%'
+        forecastWind.textContent = forecast.list[i].wind.speed + 'mph'
         forecastDiv.append(forecastDay)
         forecastDiv.append(forecastTemp)
         forecastDiv.append(forecastHumidity)
         forecastDiv.append(forecastWind)
         forecastDiv.setAttribute('data-day', i)
-        forecastDiv.setAttribute('class', 'col-2')
+        forecastDiv.setAttribute('class', 'forecast-1 col-2 justify-space-between')
         forecastEl.append(forecastDiv)
     }
 }

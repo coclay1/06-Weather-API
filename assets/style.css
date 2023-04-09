@@ -1,0 +1,17 @@
+.city-container {
+    border: solid;
+}
+
+.forecast-1 {
+    background-color: rgb(45, 45, 94);
+    color: #fff;
+}
+
+li {
+    list-style: none;
+    background-color: grey;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    font-size: 30px;
+}
