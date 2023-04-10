@@ -81,7 +81,9 @@ function displayForecast(forecast) {
         var forecastTemp = document.createElement('p')
         var forecastHumidity = document.createElement('p')
         var forecastWind = document.createElement('p')
-        forecastDay.textContent = dayjs().format('M/D/YYYY')
+        var currentDay = dayjs() ;
+        var nextDay = currentDay.add(i, 'day').format('M/D/YYYY')
+        forecastDay.textContent = nextDay
         forecastTemp.textContent = forecast.list[i].main.temp + ' F'
         forecastHumidity.textContent = forecast.list[i].main.humidity + '%'
         forecastWind.textContent = forecast.list[i].wind.speed + 'mph'
@@ -110,3 +112,4 @@ cityFormEl.addEventListener("submit", function (event) {
 });
 
 init();
+
